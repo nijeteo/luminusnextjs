@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { Camera, Video, Plane } from 'lucide-react';
+import { Camera, Video, Plane, ChevronLeft, ChevronRight } from 'lucide-react';
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -44,6 +44,13 @@ export default function Pricing() {
     container.addEventListener('scroll', handleScroll);
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const goToSlide = (index: number) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const i = Math.max(0, Math.min(index, packages.length - 1));
+    container.scrollTo({ left: i * container.offsetWidth, behavior: 'smooth' });
+  };
 
   const packages = [
     {
@@ -211,14 +218,34 @@ export default function Pricing() {
           )))}
         </div>
 
-        {/* Mobile Scroll Indicator */}
-        <div className="flex justify-center gap-2 mt-8 md:hidden">
-          {packages.map((_, i) => (
-            <div 
-              key={i} 
-              className={`h-1 transition-all duration-300 ${i === activeIndex ? 'w-8 bg-[#D4AF37]' : 'w-2 bg-white/20'}`}
-            />
-          ))}
+        {/* Mobile: tačkice + dugmad levo/desno (bez loopa) */}
+        <div className="flex items-center justify-center gap-4 -mt-2 md:hidden">
+          <button
+            type="button"
+            aria-label="Prethodni paket"
+            onClick={() => goToSlide(activeIndex - 1)}
+            disabled={activeIndex === 0}
+            className="p-2 rounded-full border border-white/20 text-white disabled:opacity-40 disabled:pointer-events-none hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <div className="flex gap-2">
+            {packages.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1 transition-all duration-300 ${i === activeIndex ? 'w-8 bg-[#D4AF37]' : 'w-2 bg-white/20'}`}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            aria-label="Sledeći paket"
+            onClick={() => goToSlide(activeIndex + 1)}
+            disabled={activeIndex === packages.length - 1}
+            className="p-2 rounded-full border border-white/20 text-white disabled:opacity-40 disabled:pointer-events-none hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
       </div>
     </section>
