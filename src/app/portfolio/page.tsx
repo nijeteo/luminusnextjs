@@ -103,26 +103,30 @@ export default function Portfolio() {
 
       <div className="max-w-7xl mx-auto px-6 space-y-32">
         
-        {/* 1. 360 Tour Section - Matterport ne dozvoljava embed (CSP frame-ancestors), otvara se u novom tabu */}
+        {/* 1. 360 Tour Section - Matterport embed (my.matterport.com/show) */}
         <section id="360-tura" className="scroll-mt-32">
           <div className="mb-10 flex items-center gap-6">
             <h2 className="text-3xl md:text-4xl font-serif">360° Virtuelna Tura</h2>
             <div className="h-[1px] flex-grow bg-white/10" />
           </div>
-          <motion.a
-            href="https://discover.matterport.com/space/SxQL3iGyoDo"
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="w-full aspect-video bg-white/5 border border-white/10 relative flex items-center justify-center group hover:bg-white/[0.08] hover:border-[#D4AF37]/50 transition-all duration-300 block"
+            className="w-full aspect-video bg-white/5 border border-white/10 relative"
           >
-            <span className="text-white/60 group-hover:text-[#D4AF37] text-sm uppercase tracking-widest transition-colors">
-              Otvori 360° turu u novom prozoru →
-            </span>
-          </motion.a>
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://my.matterport.com/show/?m=SxQL3iGyoDo&play=1"
+              frameBorder="0"
+              allowFullScreen
+              allow="xr-spatial-tracking"
+              className="absolute inset-0 w-full h-full"
+              title="360 Virtual Tour Example"
+            />
+          </motion.div>
         </section>
 
         {/* 2. Interior Section */}
