@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://formspree.io https://*.api.sanity.io wss://*.api.sanity.io https://registry.npmjs.org;
+    connect-src 'self' https://formspree.io https://*.api.sanity.io wss://*.api.sanity.io https://registry.npmjs.org https://*.supabase.co;
     script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https:;
@@ -23,6 +23,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.sanity.io",
         pathname: "/images/**",
+      },
+      // Dodaj hostname svog Supabase projekta (npr. abc123xyz.supabase.co) kada koristiš slike iz Storage
+      {
+        protocol: "https",
+        hostname: "supabase.co",
+        pathname: "/storage/v1/object/public/**",
       },
     ],
   },
