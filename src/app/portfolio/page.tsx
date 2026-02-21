@@ -3,9 +3,20 @@
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const m = window.matchMedia('(max-width: 767px)');
+    setIsMobile(m.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    m.addEventListener('change', handler);
+    return () => m.removeEventListener('change', handler);
+  }, []);
+  return isMobile;
+}
+
 const interiors = [
   "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1600607687931-cebf0746e50e?q=80&w=1000&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1000&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600210491369-e753d80a41f3?q=80&w=1000&auto=format&fit=crop",
@@ -39,6 +50,7 @@ export default function Portfolio() {
   const interiorRef = useRef<HTMLDivElement>(null);
   const exteriorRef = useRef<HTMLDivElement>(null);
   const droneRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   const [interiorIdx, setInteriorIdx] = useState(0);
   const [exteriorIdx, setExteriorIdx] = useState(0);
@@ -140,24 +152,40 @@ export default function Portfolio() {
             onScroll={() => handleScroll(interiorRef, setInteriorIdx)}
             className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-x-visible pb-6 md:pb-0 snap-x snap-mandatory scrollbar-hide"
           >
-            {interiors.map((src, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="aspect-[4/3] overflow-hidden group relative min-w-[85vw] md:min-w-0 snap-center"
-              >
-                <img 
-                  src={src} 
-                  alt={`Enterijer ${idx + 1}`} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </motion.div>
-            ))}
+            {interiors.map((src, idx) => {
+              const slideClass = "aspect-[4/3] overflow-hidden group relative min-w-[85vw] md:min-w-0 snap-center";
+              if (isMobile) {
+                return (
+                  <div key={idx} className={slideClass}>
+                    <img 
+                      src={src} 
+                      alt={`Enterijer ${idx + 1}`} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                );
+              }
+              return (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className={slideClass}
+                >
+                  <img 
+                    src={src} 
+                    alt={`Enterijer ${idx + 1}`} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </motion.div>
+              );
+            })}
           </div>
           {/* Mobile Scroll Indicator */}
           <div className="flex justify-center gap-2 mt-6 md:hidden">
@@ -181,24 +209,40 @@ export default function Portfolio() {
             onScroll={() => handleScroll(exteriorRef, setExteriorIdx)}
             className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-x-visible pb-6 md:pb-0 snap-x snap-mandatory scrollbar-hide"
           >
-            {exteriors.map((src, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="aspect-[4/3] overflow-hidden group relative min-w-[85vw] md:min-w-0 snap-center"
-              >
-                <img 
-                  src={src} 
-                  alt={`Eksterijer ${idx + 1}`} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </motion.div>
-            ))}
+            {exteriors.map((src, idx) => {
+              const slideClass = "aspect-[4/3] overflow-hidden group relative min-w-[85vw] md:min-w-0 snap-center";
+              if (isMobile) {
+                return (
+                  <div key={idx} className={slideClass}>
+                    <img 
+                      src={src} 
+                      alt={`Eksterijer ${idx + 1}`} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                );
+              }
+              return (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className={slideClass}
+                >
+                  <img 
+                    src={src} 
+                    alt={`Eksterijer ${idx + 1}`} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </motion.div>
+              );
+            })}
           </div>
           {/* Mobile Scroll Indicator */}
           <div className="flex justify-center gap-2 mt-6 md:hidden">
@@ -222,37 +266,48 @@ export default function Portfolio() {
             onScroll={() => handleScroll(droneRef, setDroneIdx)}
             className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-x-visible pb-6 md:pb-0 snap-x snap-mandatory scrollbar-hide"
           >
-            {drones.map((item, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="aspect-video md:aspect-[4/3] overflow-hidden group relative bg-white/5 min-w-[85vw] md:min-w-0 snap-center"
-              >
-                {item.type === 'image' ? (
-                  <img 
-                    src={item.src} 
-                    alt={`Dron ${idx + 1}`} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <iframe 
-                    width="100%" 
-                    height="100%" 
-                    src={item.src} 
-                    title={`Dron Video ${idx + 1}`} 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowFullScreen
-                    className="w-full h-full"
-                  ></iframe>
-                )}
-                <div className="absolute inset-0 bg-black/10 pointer-events-none" />
-              </motion.div>
-            ))}
+            {drones.map((item, idx) => {
+              const slideClass = "aspect-video md:aspect-[4/3] overflow-hidden group relative bg-white/5 min-w-[85vw] md:min-w-0 snap-center";
+              const content = (
+                <>
+                  {item.type === 'image' ? (
+                    <img 
+                      src={item.src} 
+                      alt={`Dron ${idx + 1}`} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <iframe 
+                      width="100%" 
+                      height="100%" 
+                      src={item.src} 
+                      title={`Dron Video ${idx + 1}`} 
+                      frameBorder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                      allowFullScreen
+                      className="w-full h-full"
+                    ></iframe>
+                  )}
+                  <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+                </>
+              );
+              if (isMobile) {
+                return <div key={idx} className={slideClass}>{content}</div>;
+              }
+              return (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className={slideClass}
+                >
+                  {content}
+                </motion.div>
+              );
+            })}
           </div>
           {/* Mobile Scroll Indicator */}
           <div className="flex justify-center gap-2 mt-6 md:hidden">
