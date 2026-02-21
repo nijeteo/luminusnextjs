@@ -42,6 +42,14 @@ export default function Contact() {
     ? `https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID}`
     : null;
 
+  // Minimalno dan unapred za rezervaciju (lokalan datum)
+  const getMinDate = () => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  };
+  const minDate = getMinDate();
+
   const validate = () => {
     const newErrors: Record<string, string> = {};
     
@@ -56,7 +64,11 @@ export default function Contact() {
     
     if (!formData.package) newErrors.package = 'Izaberite paket';
     
-    if (!formData.date) newErrors.date = 'Izaberite datum';
+    if (!formData.date) {
+      newErrors.date = 'Izaberite datum';
+    } else if (formData.date < minDate) {
+      newErrors.date = 'Rezervacija mora biti najmanje dan unapred';
+    }
     
     if (formData.time) {
       const hour = parseInt(formData.time.split(':')[0], 10);
@@ -96,10 +108,14 @@ export default function Contact() {
           _replyto: formData.email,
         }),
       });
-      if (!res.ok) throw new Error('Slanje nije uspelo.');
+      if (!res.ok) {
+        await res.text();
+        setSubmitError(`Formspree greška (${res.status}). Na Vercel-u u Settings → Environment Variables dodajte NEXT_PUBLIC_FORMSPREE_ID=mykddrkn. Ili nas kontaktirajte: info@luminus.rs`);
+        return;
+      }
       setIsSubmitted(true);
-    } catch {
-      setSubmitError('Greška pri slanju. Pokušajte ponovo ili nas kontaktirajte direktno na info@luminus.rs');
+    } catch (err) {
+      setSubmitError('Mreža ili Formspree nisu dostupni. Proverite internet i da li je NEXT_PUBLIC_FORMSPREE_ID podešen na deploy-u. Kontakt: info@luminus.rs');
     } finally {
       setIsSubmitting(false);
     }
@@ -381,6 +397,7 @@ export default function Contact() {
                       name="date"
                       value={formData.date}
                       onChange={handleChange}
+                      min={minDate}
                       className={`w-full bg-white/5 border ${errors.date ? 'border-red-500/50' : 'border-white/10'} px-4 py-2.5 md:py-3 text-sm text-white focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]`}
                     />
                   </div>
