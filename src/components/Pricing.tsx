@@ -208,8 +208,7 @@ export default function Pricing() {
                 </Link>
               </div>
             </motion.div>
-          ));
-        }
+          )))}
         </div>
 
         {/* Mobile Scroll Indicator */}
