@@ -1,6 +1,8 @@
 import PaketiContent from "./PaketiContent";
 import { getPaketiPage, getPaketiServices, getPackages } from "@/lib/supabase-content";
 
+export const dynamic = "force-dynamic";
+
 export default async function PaketiPage() {
   const [pageContent, services, packages] = await Promise.all([
     getPaketiPage(),
