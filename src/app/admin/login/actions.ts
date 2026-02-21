@@ -14,11 +14,20 @@ function getToken(password: string, date: string): string {
 }
 
 export async function login(formData: FormData) {
-  const password = process.env.ADMIN_PASSWORD;
-  const input = formData.get("password") as string | null;
-  if (!password || !input || input !== password) {
+  const rawPassword = process.env.ADMIN_PASSWORD;
+  const password = typeof rawPassword === "string" ? rawPassword.trim() : "";
+  const input = (formData.get("password") as string | null)?.trim() ?? "";
+
+  if (!password) {
+    return {
+      error:
+        "ADMIN_PASSWORD nije podešen. U .env.local dodaj ADMIN_PASSWORD=tvoja_lozinka i restartuj dev server (npm run dev).",
+    };
+  }
+  if (!input || input !== password) {
     return { error: "Pogrešna lozinka." };
   }
+
   const date = new Date().toISOString().slice(0, 10);
   const token = getToken(password, date);
   const store = await cookies();

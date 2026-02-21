@@ -16,7 +16,8 @@ export async function middleware(request: NextRequest) {
   if (!pathname.startsWith("/admin")) return NextResponse.next();
   if (pathname === "/admin/login") return NextResponse.next();
 
-  const password = process.env.ADMIN_PASSWORD;
+  const rawPassword = process.env.ADMIN_PASSWORD;
+  const password = typeof rawPassword === "string" ? rawPassword.trim() : "";
   const cookie = request.cookies.get(ADMIN_COOKIE)?.value;
   const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   const expected = password ? await getExpectedToken(password, date) : "";
