@@ -107,10 +107,10 @@ export default function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className={`relative bg-black/40 backdrop-blur-xl border ${pkg.popular ? 'border-[#D4AF37]' : 'border-white/10'} p-8 md:p-10 flex flex-col h-full hover:bg-black/60 transition-colors duration-300 min-w-[85vw] md:min-w-0 snap-center`}
+              className={`relative bg-black/40 backdrop-blur-xl border ${pkg.popular ? 'border-[#D4AF37]' : 'border-white/10'} p-8 md:p-10 flex flex-col h-full hover:bg-black/60 transition-colors duration-300 min-w-[85vw] md:min-w-0 snap-center ${pkg.popular ? 'pt-0' : ''}`}
             >
               {pkg.popular && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#D4AF37] text-black text-[10px] font-bold uppercase tracking-widest py-1 px-4">
+                <div className="bg-[#D4AF37] text-black text-[10px] font-bold uppercase tracking-widest py-2 text-center -mx-8 mb-4 rounded-t-sm md:absolute md:top-0 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:mx-0 md:mb-0 md:rounded md:py-1 md:px-4">
                   Najpopularniji
                 </div>
               )}
