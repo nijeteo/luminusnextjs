@@ -298,7 +298,7 @@ export default function Contact() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" data-build="min-date-feb2026">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 {/* Name */}
                 <div className="space-y-1 md:space-y-2">
