@@ -9,7 +9,8 @@ const cspHeader = `
     object-src 'none';
     base-uri 'self';
     form-action 'self';
-    frame-ancestors 'self' https://discover.matterport.com/;
+    frame-src 'self' https://my.matterport.com https://discover.matterport.com https://*.matterport.com https://www.youtube.com https://youtube.com;
+    frame-ancestors 'self';
     upgrade-insecure-requests;
 `;
 
