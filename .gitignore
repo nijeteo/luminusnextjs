@@ -28,7 +28,6 @@ Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
-next-env.d.ts
 
 # Temp / scratch
 .git.tsx

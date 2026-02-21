@@ -5,7 +5,15 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Pricing from '../../components/Pricing';
 
-const services = [
+type ServiceItem = {
+  title: string;
+  description: string;
+  image: string;
+  reverse: boolean;
+  linkTo?: string;
+};
+
+const services: ServiceItem[] = [
   {
     title: "Fotografija Enterijera",
     description: "Hvatamo suštinu svakog prostora. Kroz pažljivo kadriranje, optimalno osvetljenje i naprednu postprodukciju, ističemo toplinu, prostranost i dizajn vašeg enterijera. Svaka fotografija je dizajnirana da privuče pažnju i stvori emotivnu povezanost sa potencijalnim kupcima.",
@@ -89,7 +97,7 @@ export default function Packages() {
   );
 }
 
-function ServiceRow({ service, index }: { service: any, index: number }) {
+function ServiceRow({ service, index }: { service: ServiceItem; index: number }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,

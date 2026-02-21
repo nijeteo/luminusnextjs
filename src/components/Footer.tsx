@@ -72,12 +72,8 @@ export default function Footer() {
           </Link>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 text-xs text-center text-white/40 flex flex-col md:flex-row justify-between items-center">
+      <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 text-xs text-center text-white/40">
         <p>&copy; {new Date().getFullYear()} Luminus Studio. Sva prava zadržana.</p>
-        <div className="mt-4 md:mt-0 space-x-4">
-          <a href="#" className="hover:text-white transition-colors">Politika Privatnosti</a>
-          <a href="#" className="hover:text-white transition-colors">Uslovi Korišćenja</a>
-        </div>
       </div>
     </footer>
   );

@@ -75,29 +75,31 @@ export default function Contact() {
     e.preventDefault();
     setSubmitError(null);
     if (!validate()) return;
+    if (!FORMSPREE_ENDPOINT) {
+      setSubmitError('Forma nije podešena. Kontaktirajte nas direktno: info@luminus.rs ili +381 62 923 3484.');
+      return;
+    }
     setIsSubmitting(true);
     try {
-      if (FORMSPREE_ENDPOINT) {
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            city: formData.city,
-            package: formData.package,
-            date: formData.date,
-            time: formData.time,
-            message: formData.message,
-            _replyto: formData.email,
-          }),
-        });
-        if (!res.ok) throw new Error('Slanje nije uspelo.');
-      }
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          city: formData.city,
+          package: formData.package,
+          date: formData.date,
+          time: formData.time,
+          message: formData.message,
+          _replyto: formData.email,
+        }),
+      });
+      if (!res.ok) throw new Error('Slanje nije uspelo.');
       setIsSubmitted(true);
     } catch {
-      setSubmitError('Greška pri slanju. Pokušajte ponovo ili nas kontaktirajte direktno na odgajivacnicaroyal@gmail.com');
+      setSubmitError('Greška pri slanju. Pokušajte ponovo ili nas kontaktirajte direktno na info@luminus.rs');
     } finally {
       setIsSubmitting(false);
     }
