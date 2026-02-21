@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://formspree.io;
+    connect-src 'self' https://formspree.io https://*.api.sanity.io wss://*.api.sanity.io https://registry.npmjs.org https://cdn.builder.io https://*.builder.io;
     script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https:;
@@ -17,6 +17,20 @@ const cspHeader = `
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+        pathname: "/images/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.builder.io",
+        pathname: "/api/v1/image/**",
+      },
+    ],
+  },
   headers: () => {
     return [
       {
