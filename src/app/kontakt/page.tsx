@@ -95,7 +95,10 @@ export default function Contact() {
     try {
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
@@ -114,8 +117,8 @@ export default function Contact() {
         return;
       }
       setIsSubmitted(true);
-    } catch (err) {
-      setSubmitError('Mreža ili Formspree nisu dostupni. Proverite internet i da li je NEXT_PUBLIC_FORMSPREE_ID podešen na deploy-u. Kontakt: info@luminus.rs');
+    } catch {
+      setSubmitError('Slanje nije uspelo. Pošaljite nam direktno email na info@luminus.rs ili nazovite +381 62 923 3484.');
     } finally {
       setIsSubmitting(false);
     }
@@ -443,9 +446,14 @@ export default function Contact() {
               </div>
 
               {submitError && (
-                <p className="text-red-400 text-[10px] flex items-center gap-2 mt-2">
-                  <AlertCircle size={14} /> {submitError}
-                </p>
+                <div className="mt-2 space-y-1">
+                  <p className="text-red-400 text-[10px] flex items-center gap-2">
+                    <AlertCircle size={14} /> {submitError}
+                  </p>
+                  <a href="mailto:info@luminus.rs" className="text-[#D4AF37] text-[10px] underline hover:text-white block">
+                    Pošalji email direktno →
+                  </a>
+                </div>
               )}
               {/* Submit Button */}
               <button 
