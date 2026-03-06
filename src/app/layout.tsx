@@ -7,6 +7,9 @@ import ScrollToTop from "../components/ScrollToTop";
 export const metadata: Metadata = {
   title: "Luminus Studio | Ekskluzivna Fotografija Nekretnina",
   description: "Profesionalno fotografisanje, snimanje, 360° ture i dron snimci nekretnina. Istaknite vašu imovinu u najboljem svetlu.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
