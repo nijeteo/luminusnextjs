@@ -61,6 +61,26 @@ export type PortfolioPageContent = {
   eyebrowText: string | null;
   title: string | null;
   subtitle: string | null;
+  tour360Embed: string | null;
+  videoProdukcijaEmbed: string | null;
+  sectionTuraTitle: string | null;
+  sectionEnterijerTitle: string | null;
+  sectionEksterijerTitle: string | null;
+  sectionDronTitle: string | null;
+  sectionVideoTitle: string | null;
+};
+
+export type PortfolioMediaItem = {
+  id: string;
+  imageUrl: string;
+  sortOrder: number;
+};
+
+export type PortfolioDroneItem = {
+  id: string;
+  mediaUrl: string;
+  mediaType: "image" | "video";
+  sortOrder: number;
 };
 
 export type KontaktPageContent = {
@@ -191,7 +211,7 @@ export async function getPortfolioPage(): Promise<PortfolioPageContent | null> {
   if (!supabase) return null;
   const { data, error } = await supabase
     .from("portfolio_page")
-    .select("eyebrow_text, title, subtitle")
+    .select("*")
     .limit(1)
     .maybeSingle();
   if (error || !data) return null;
@@ -200,44 +220,56 @@ export async function getPortfolioPage(): Promise<PortfolioPageContent | null> {
     eyebrowText: (row.eyebrow_text as string) ?? null,
     title: (row.title as string) ?? null,
     subtitle: (row.subtitle as string) ?? null,
+    tour360Embed: (row.tour_360_embed as string) ?? null,
+    videoProdukcijaEmbed: (row.video_produkcija_embed as string) ?? null,
+    sectionTuraTitle: (row.section_tura_title as string) ?? null,
+    sectionEnterijerTitle: (row.section_enterijer_title as string) ?? null,
+    sectionEksterijerTitle: (row.section_eksterijer_title as string) ?? null,
+    sectionDronTitle: (row.section_dron_title as string) ?? null,
+    sectionVideoTitle: (row.section_video_title as string) ?? null,
   };
 }
 
-export async function getPortfolioInteriorUrls(): Promise<string[]> {
+export async function getPortfolioInteriorItems(): Promise<PortfolioMediaItem[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from("portfolio_interior")
-    .select("image_url")
+    .select("id, image_url, sort_order")
     .order("sort_order", { ascending: true });
   if (error || !data) return [];
-  return (data as Record<string, unknown>[])
-    .map((r) => r.image_url as string)
-    .filter(Boolean);
+  return (data as Record<string, unknown>[]).map((r) => ({
+    id: r.id as string,
+    imageUrl: (r.image_url as string) ?? "",
+    sortOrder: (r.sort_order as number) ?? 0,
+  }));
 }
 
-export async function getPortfolioExteriorUrls(): Promise<string[]> {
+export async function getPortfolioExteriorItems(): Promise<PortfolioMediaItem[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from("portfolio_exterior")
-    .select("image_url")
+    .select("id, image_url, sort_order")
     .order("sort_order", { ascending: true });
   if (error || !data) return [];
-  return (data as Record<string, unknown>[])
-    .map((r) => r.image_url as string)
-    .filter(Boolean);
+  return (data as Record<string, unknown>[]).map((r) => ({
+    id: r.id as string,
+    imageUrl: (r.image_url as string) ?? "",
+    sortOrder: (r.sort_order as number) ?? 0,
+  }));
 }
 
-export type PortfolioDroneItem = { mediaUrl: string; mediaType: "image" | "video" };
 export async function getPortfolioDrone(): Promise<PortfolioDroneItem[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from("portfolio_drone")
-    .select("media_url, media_type")
+    .select("id, media_url, media_type, sort_order")
     .order("sort_order", { ascending: true });
   if (error || !data) return [];
   return (data as Record<string, unknown>[]).map((row) => ({
+    id: row.id as string,
     mediaUrl: (row.media_url as string) ?? "",
     mediaType: ((row.media_type as string) === "video" ? "video" : "image") as "image" | "video",
+    sortOrder: (row.sort_order as number) ?? 0,
   }));
 }
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { updateHome } from "../actions";
+import { ImageUploadInput } from "../ImageUploadInput";
 
 const empty = (v: unknown) => (v == null ? "" : String(v));
 
@@ -36,7 +37,7 @@ export function AdminHomeForm({ initial }: { initial: Record<string, unknown> | 
         });
         setSaving(false);
         if (res?.error) setMessage({ type: "error", text: res.error });
-        else setMessage({ type: "ok", text: "Sačuvano." });
+        else setMessage({ type: "ok", text: "Sacuvano." });
       }}
     >
       {message && (
@@ -44,7 +45,7 @@ export function AdminHomeForm({ initial }: { initial: Record<string, unknown> | 
       )}
 
       <Section title="Hero">
-        <Input label="Slika (URL)" name="hero_image_url" defaultValue={empty(initial?.hero_image_url)} />
+        <ImageUploadInput label="Slika" name="hero_image_url" defaultValue={empty(initial?.hero_image_url)} />
         <Input label="Naslov" name="hero_title" defaultValue={empty(initial?.hero_title)} />
         <Input label="Podnaslov" name="hero_subtitle" defaultValue={empty(initial?.hero_subtitle)} />
         <Input label="Tekst dugmeta (CTA)" name="hero_cta_text" defaultValue={empty(initial?.hero_cta_text)} />
@@ -57,14 +58,14 @@ export function AdminHomeForm({ initial }: { initial: Record<string, unknown> | 
       </Section>
 
       <Section title="Detalj sekcija">
-        <Input label="Slika (URL)" name="detail_image_url" defaultValue={empty(initial?.detail_image_url)} />
+        <ImageUploadInput label="Slika" name="detail_image_url" defaultValue={empty(initial?.detail_image_url)} />
         <Input label="Label" name="detail_label" defaultValue={empty(initial?.detail_label)} />
         <Input label="Naslov" name="detail_heading" defaultValue={empty(initial?.detail_heading)} />
         <Textarea label="Tekst" name="detail_text" defaultValue={empty(initial?.detail_text)} />
       </Section>
 
       <Section title="Pricing sekcija">
-        <Input label="Pozadinska slika (URL)" name="pricing_bg_image_url" defaultValue={empty(initial?.pricing_bg_image_url)} />
+        <ImageUploadInput label="Pozadinska slika" name="pricing_bg_image_url" defaultValue={empty(initial?.pricing_bg_image_url)} />
         <Input label="Naslov" name="pricing_heading" defaultValue={empty(initial?.pricing_heading)} />
         <Input label="Podnaslov" name="pricing_subheading" defaultValue={empty(initial?.pricing_subheading)} />
       </Section>
@@ -80,7 +81,7 @@ export function AdminHomeForm({ initial }: { initial: Record<string, unknown> | 
         disabled={saving}
         className="rounded bg-amber-600 px-4 py-2 font-medium text-white hover:bg-amber-500 disabled:opacity-50"
       >
-        {saving ? "Čuvam…" : "Sačuvaj"}
+        {saving ? "Cuvam..." : "Sacuvaj"}
       </button>
     </form>
   );
@@ -95,22 +96,12 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function Input({
-  label,
-  name,
-  defaultValue,
-  type = "text",
-}: {
-  label: string;
-  name: string;
-  defaultValue: string;
-  type?: string;
-}) {
+function Input({ label, name, defaultValue }: { label: string; name: string; defaultValue: string }) {
   return (
     <div>
       <label className="block text-xs text-zinc-500 mb-1">{label}</label>
       <input
-        type={type}
+        type="text"
         name={name}
         defaultValue={defaultValue}
         className="w-full rounded border border-zinc-600 bg-zinc-700 px-3 py-2 text-white focus:border-amber-500 focus:outline-none"

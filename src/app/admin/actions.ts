@@ -108,10 +108,7 @@ export async function createPackage(item: {
   sort_order: number;
 }) {
   if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
-  const { error } = await supabaseAdmin.from("packages").insert({
-    ...item,
-    features: item.features,
-  });
+  const { error } = await supabaseAdmin.from("packages").insert({ ...item, features: item.features });
   if (error) return { error: error.message };
   revalidatePath("/");
   revalidatePath("/paketi");
@@ -121,14 +118,7 @@ export async function createPackage(item: {
 
 export async function updatePackage(
   id: string,
-  item: Partial<{
-    name: string;
-    description: string;
-    price: string;
-    features: string[];
-    is_popular: boolean;
-    sort_order: number;
-  }>
+  item: Partial<{ name: string; description: string; price: string; features: string[]; is_popular: boolean; sort_order: number }>
 ) {
   if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
   const { error } = await supabaseAdmin.from("packages").update(item).eq("id", id);
@@ -204,14 +194,7 @@ export async function createPaketiService(item: {
 
 export async function updatePaketiService(
   id: string,
-  item: Partial<{
-    title: string;
-    description: string;
-    image_url: string;
-    reverse: boolean;
-    link_to: string | null;
-    sort_order: number;
-  }>
+  item: Partial<{ title: string; description: string; image_url: string; reverse: boolean; link_to: string | null; sort_order: number }>
 ) {
   if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
   const { error } = await supabaseAdmin.from("paketi_services").update(item).eq("id", id);
@@ -241,6 +224,13 @@ export async function updatePortfolioPage(payload: {
   eyebrow_text?: string | null;
   title?: string | null;
   subtitle?: string | null;
+  tour_360_embed?: string | null;
+  video_produkcija_embed?: string | null;
+  section_tura_title?: string | null;
+  section_enterijer_title?: string | null;
+  section_eksterijer_title?: string | null;
+  section_dron_title?: string | null;
+  section_video_title?: string | null;
 }) {
   if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
   const { data: row } = await supabaseAdmin.from("portfolio_page").select("id").limit(1).maybeSingle();
@@ -253,6 +243,120 @@ export async function updatePortfolioPage(payload: {
   }
   revalidatePath("/portfolio");
   revalidatePath("/admin/portfolio");
+  return { ok: true };
+}
+
+// ---- Portfolio Interior ----
+export async function getPortfolioInteriorRows() {
+  if (!supabaseAdmin) return [];
+  const { data } = await supabaseAdmin
+    .from("portfolio_interior")
+    .select("id, image_url, sort_order")
+    .order("sort_order", { ascending: true });
+  return (data ?? []) as Record<string, unknown>[];
+}
+
+export async function createPortfolioInterior(item: { image_url: string; sort_order: number }) {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+  const { error } = await supabaseAdmin.from("portfolio_interior").insert(item);
+  if (error) return { error: error.message };
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio/interior");
+  return { ok: true };
+}
+
+export async function updatePortfolioInterior(id: string, item: { image_url?: string; sort_order?: number }) {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+  const { error } = await supabaseAdmin.from("portfolio_interior").update(item).eq("id", id);
+  if (error) return { error: error.message };
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio/interior");
+  return { ok: true };
+}
+
+export async function deletePortfolioInterior(id: string) {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+  const { error } = await supabaseAdmin.from("portfolio_interior").delete().eq("id", id);
+  if (error) return { error: error.message };
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio/interior");
+  return { ok: true };
+}
+
+// ---- Portfolio Exterior ----
+export async function getPortfolioExteriorRows() {
+  if (!supabaseAdmin) return [];
+  const { data } = await supabaseAdmin
+    .from("portfolio_exterior")
+    .select("id, image_url, sort_order")
+    .order("sort_order", { ascending: true });
+  return (data ?? []) as Record<string, unknown>[];
+}
+
+export async function createPortfolioExterior(item: { image_url: string; sort_order: number }) {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+  const { error } = await supabaseAdmin.from("portfolio_exterior").insert(item);
+  if (error) return { error: error.message };
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio/exterior");
+  return { ok: true };
+}
+
+export async function updatePortfolioExterior(id: string, item: { image_url?: string; sort_order?: number }) {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+  const { error } = await supabaseAdmin.from("portfolio_exterior").update(item).eq("id", id);
+  if (error) return { error: error.message };
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio/exterior");
+  return { ok: true };
+}
+
+export async function deletePortfolioExterior(id: string) {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+  const { error } = await supabaseAdmin.from("portfolio_exterior").delete().eq("id", id);
+  if (error) return { error: error.message };
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio/exterior");
+  return { ok: true };
+}
+
+// ---- Portfolio Drone ----
+export async function getPortfolioDroneRows() {
+  if (!supabaseAdmin) return [];
+  const { data } = await supabaseAdmin
+    .from("portfolio_drone")
+    .select("id, media_url, media_type, sort_order")
+    .order("sort_order", { ascending: true });
+  return (data ?? []) as Record<string, unknown>[];
+}
+
+export async function createPortfolioDrone(item: { media_url: string; media_type: "image" | "video"; sort_order: number }) {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+  const { error } = await supabaseAdmin.from("portfolio_drone").insert(item);
+  if (error) return { error: error.message };
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio/drone");
+  return { ok: true };
+}
+
+export async function updatePortfolioDrone(
+  id: string,
+  item: { media_url?: string; media_type?: "image" | "video"; sort_order?: number }
+) {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+  const { error } = await supabaseAdmin.from("portfolio_drone").update(item).eq("id", id);
+  if (error) return { error: error.message };
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio/drone");
+  return { ok: true };
+}
+
+export async function deletePortfolioDrone(id: string) {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+  const { error } = await supabaseAdmin.from("portfolio_drone").delete().eq("id", id);
+  if (error) return { error: error.message };
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio/drone");
   return { ok: true };
 }
 
@@ -276,4 +380,32 @@ export async function updateKontaktPage(payload: Record<string, string | null>) 
   revalidatePath("/kontakt");
   revalidatePath("/admin/kontakt");
   return { ok: true };
+}
+
+// ---- Image upload ----
+export async function uploadImageToStorage(
+  formData: FormData
+): Promise<{ url: string } | { error: string }> {
+  if (!supabaseAdmin) return { error: "Admin klijent nije dostupan." };
+
+  const file = formData.get("file") as File | null;
+  if (!file || file.size === 0) return { error: "Fajl nije izabran." };
+
+  const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
+  const allowed = ["jpg", "jpeg", "png", "webp", "gif", "avif"];
+  if (!allowed.includes(ext)) return { error: "Format nije podrzan. Koristi JPG, PNG, WEBP ili GIF." };
+
+  const fileName = `admin/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const { error } = await supabaseAdmin.storage
+    .from("images")
+    .upload(fileName, buffer, { contentType: file.type, upsert: false });
+
+  if (error) return { error: error.message };
+
+  const { data } = supabaseAdmin.storage.from("images").getPublicUrl(fileName);
+  return { url: data.publicUrl };
 }

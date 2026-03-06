@@ -2,23 +2,13 @@
 
 import { useState } from "react";
 import { updatePaketiService, deletePaketiService } from "../actions";
+import { ImageUploadInput } from "../ImageUploadInput";
 
 export function PaketiServiceRow({
-  id,
-  title,
-  description,
-  imageUrl,
-  reverse,
-  linkTo,
-  sortOrder,
+  id, title, description, imageUrl, reverse, linkTo, sortOrder,
 }: {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  reverse: boolean;
-  linkTo: string | null;
-  sortOrder: number;
+  id: string; title: string; description: string; imageUrl: string;
+  reverse: boolean; linkTo: string | null; sortOrder: number;
 }) {
   const [editing, setEditing] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -41,11 +31,7 @@ export function PaketiServiceRow({
           });
           setSaving(false);
           if (res?.error) setMsg(res.error);
-          else {
-            setMsg("Sačuvano.");
-            setEditing(false);
-            window.location.reload();
-          }
+          else { setMsg("Sacuvano."); setEditing(false); window.location.reload(); }
         }}
       >
         <div className="grid gap-3 sm:grid-cols-2">
@@ -54,25 +40,25 @@ export function PaketiServiceRow({
             <input name="title" defaultValue={title} className="w-full rounded border border-zinc-600 bg-zinc-700 px-3 py-2 text-white" />
           </div>
           <div>
-            <label className="block text-xs text-zinc-500 mb-1">Slika (URL)</label>
-            <input name="image_url" defaultValue={imageUrl} className="w-full rounded border border-zinc-600 bg-zinc-700 px-3 py-2 text-white" />
+            <label className="block text-xs text-zinc-500 mb-1">Link</label>
+            <input name="link_to" defaultValue={linkTo ?? ""} placeholder="/portfolio" className="w-full rounded border border-zinc-600 bg-zinc-700 px-3 py-2 text-white" />
           </div>
         </div>
+        <ImageUploadInput name="image_url" label="Slika" defaultValue={imageUrl} />
         <div>
           <label className="block text-xs text-zinc-500 mb-1">Opis</label>
           <textarea name="description" defaultValue={description} rows={2} className="w-full rounded border border-zinc-600 bg-zinc-700 px-3 py-2 text-white" />
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <input name="link_to" defaultValue={linkTo ?? ""} placeholder="Link" className="rounded border border-zinc-600 bg-zinc-700 px-3 py-2 text-white w-48" />
           <label className="flex items-center gap-2 text-sm text-zinc-400">
             <input type="checkbox" name="reverse" value="1" defaultChecked={reverse} className="rounded border-zinc-600 bg-zinc-700 text-amber-500" />
             Reverse
           </label>
           <input type="number" name="sort_order" defaultValue={sortOrder} className="w-16 rounded border border-zinc-600 bg-zinc-700 px-2 py-1 text-white" />
-          <button type="submit" disabled={saving} className="rounded bg-amber-600 px-4 py-2 text-white">Sačuvaj</button>
+          <button type="submit" disabled={saving} className="rounded bg-amber-600 px-4 py-2 text-white">Sacuvaj</button>
           <button type="button" onClick={() => setEditing(false)} className="rounded border border-zinc-600 px-4 py-2 text-zinc-400">Odustani</button>
+          {msg && <p className="text-sm text-zinc-400">{msg}</p>}
         </div>
-        {msg && <p className="text-sm text-zinc-400">{msg}</p>}
       </form>
     );
   }
@@ -88,8 +74,8 @@ export function PaketiServiceRow({
       </div>
       <div className="flex gap-2">
         <button type="button" onClick={() => setEditing(true)} className="rounded border border-zinc-600 px-2 py-1 text-sm text-zinc-300 hover:bg-zinc-700">Izmeni</button>
-        <form action={async () => { if (confirm("Obriši uslugu?")) { await deletePaketiService(id); window.location.reload(); } }}>
-          <button type="submit" className="rounded border border-red-800 px-2 py-1 text-sm text-red-400 hover:bg-red-900/30">Obriši</button>
+        <form action={async () => { if (confirm("Obrisi uslugu?")) { await deletePaketiService(id); window.location.reload(); } }}>
+          <button type="submit" className="rounded border border-red-800 px-2 py-1 text-sm text-red-400 hover:bg-red-900/30">Obrisi</button>
         </form>
       </div>
     </div>

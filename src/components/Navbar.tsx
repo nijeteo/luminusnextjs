@@ -40,6 +40,8 @@ export default function Navbar() {
     { name: 'Kontakt', path: '/kontakt' },
   ];
 
+  if (pathname.startsWith("/admin")) return null;
+
   return (
     <motion.nav
       variants={{

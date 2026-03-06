@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import FooterWrapper from "../components/FooterWrapper";
 import ScrollToTop from "../components/ScrollToTop";
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function RootLayout({
         <main className="flex-grow">
           {children}
         </main>
-        <Footer />
+        <FooterWrapper />
       </body>
     </html>
   );

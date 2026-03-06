@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getPackageRows } from "../actions";
 import { PackageRow } from "./PackageRow";
 import { AddPackageForm } from "./AddPackageForm";
@@ -8,12 +7,8 @@ export const dynamic = "force-dynamic";
 export default async function AdminPackagesPage() {
   const rows = await getPackageRows();
   return (
-    <div className="py-6">
-      <div className="mb-6 flex items-center gap-4">
-        <Link href="/admin" className="text-zinc-400 hover:text-white">← Dashboard</Link>
-        <span className="text-zinc-500">|</span>
-        <h1 className="text-xl font-semibold text-white">Paketi</h1>
-      </div>
+    <div>
+      <h1 className="text-xl font-semibold text-white mb-6">Paketi & cene</h1>
 
       <div className="mb-8 rounded-lg border border-zinc-700 bg-zinc-800/50 p-4">
         <h2 className="mb-3 text-sm font-medium text-amber-400">Dodaj paket</h2>

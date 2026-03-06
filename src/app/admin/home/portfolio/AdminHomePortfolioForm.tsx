@@ -2,13 +2,16 @@
 
 import { useState } from "react";
 import { createHomePortfolioItem } from "../../actions";
+import { ImageUploadInput } from "../../ImageUploadInput";
 
 export function AdminHomePortfolioForm() {
   const [message, setMessage] = useState<{ type: "ok" | "error"; text: string } | null>(null);
   const [saving, setSaving] = useState(false);
+  const [key, setKey] = useState(0);
 
   return (
     <form
+      key={key}
       className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
       action={async (fd: FormData) => {
         setMessage(null);
@@ -23,15 +26,14 @@ export function AdminHomePortfolioForm() {
         if (res?.error) setMessage({ type: "error", text: res.error });
         else {
           setMessage({ type: "ok", text: "Dodato." });
-          window.location.reload();
+          setKey((k) => k + 1);
         }
       }}
     >
-      {message && <p className={message.type === "ok" ? "text-green-400" : "text-red-400"}>{message.text}</p>}
+      {message && <p className={`sm:col-span-2 lg:col-span-4 text-sm ${message.type === "ok" ? "text-green-400" : "text-red-400"}`}>{message.text}</p>}
       <input type="hidden" name="sort_order" value={999} />
-      <div>
-        <label className="block text-xs text-zinc-500 mb-1">Slika (URL)</label>
-        <input type="url" name="image_url" required className="w-full rounded border border-zinc-600 bg-zinc-700 px-3 py-2 text-white focus:border-amber-500 focus:outline-none" />
+      <div className="lg:col-span-2">
+        <ImageUploadInput name="image_url" label="Slika" required />
       </div>
       <div>
         <label className="block text-xs text-zinc-500 mb-1">Naslov</label>
@@ -43,7 +45,7 @@ export function AdminHomePortfolioForm() {
       </div>
       <div className="flex items-end">
         <button type="submit" disabled={saving} className="rounded bg-amber-600 px-4 py-2 text-white hover:bg-amber-500 disabled:opacity-50">
-          {saving ? "Dodajem…" : "Dodaj"}
+          {saving ? "Dodajem..." : "Dodaj"}
         </button>
       </div>
     </form>

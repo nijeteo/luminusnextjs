@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getPaketiPageRow, getPaketiServiceRows } from "../actions";
 import { PaketiPageForm } from "./PaketiPageForm";
 import { PaketiServiceRow } from "./PaketiServiceRow";
@@ -9,12 +8,8 @@ export const dynamic = "force-dynamic";
 export default async function AdminPaketiPage() {
   const [pageRow, serviceRows] = await Promise.all([getPaketiPageRow(), getPaketiServiceRows()]);
   return (
-    <div className="py-6">
-      <div className="mb-6 flex items-center gap-4">
-        <Link href="/admin" className="text-zinc-400 hover:text-white">← Dashboard</Link>
-        <span className="text-zinc-500">|</span>
-        <h1 className="text-xl font-semibold text-white">Stranica Paketi</h1>
-      </div>
+    <div>
+      <h1 className="text-xl font-semibold text-white mb-6">Stranica Paketi</h1>
 
       <div className="mb-8 rounded-lg border border-zinc-700 bg-zinc-800/50 p-4">
         <h2 className="mb-3 text-sm font-medium text-amber-400">Naslovi stranice</h2>
