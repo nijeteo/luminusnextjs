@@ -9,6 +9,8 @@ export type HomeContent = {
   heroCtaText: string | null;
   scrollLabel: string | null;
   introHeading: string | null;
+  introHeadingAccent: string | null;
+  introHeadingAccentColor: string | null;
   introText: string | null;
   detailImageUrl: string | null;
   detailLabel: string | null;
@@ -113,6 +115,8 @@ function rowToHome(row: Record<string, unknown> | null): HomeContent | null {
     heroCtaText: (row.hero_cta_text as string) ?? null,
     scrollLabel: (row.scroll_label as string) ?? null,
     introHeading: (row.intro_heading as string) ?? null,
+    introHeadingAccent: (row.intro_heading_accent as string) ?? null,
+    introHeadingAccentColor: (row.intro_heading_accent_color as string) ?? null,
     introText: (row.intro_text as string) ?? null,
     detailImageUrl: (row.detail_image_url as string) ?? null,
     detailLabel: (row.detail_label as string) ?? null,

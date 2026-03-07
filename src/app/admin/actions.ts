@@ -10,6 +10,8 @@ type HomePayload = {
   hero_cta_text?: string | null;
   scroll_label?: string | null;
   intro_heading?: string | null;
+  intro_heading_accent?: string | null;
+  intro_heading_accent_color?: string | null;
   intro_text?: string | null;
   detail_image_url?: string | null;
   detail_label?: string | null;

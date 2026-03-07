@@ -33,6 +33,8 @@ export default function HomePageFallback({
   const heroCta = home?.heroCtaText ?? "Zakaži Termin";
   const scrollLabel = home?.scrollLabel ?? "Skroluj";
   const introHeading = home?.introHeading ?? "Istaknite vašu imovinu u ";
+  const introHeadingAccent = home?.introHeadingAccent ?? "najboljem svetlu";
+  const introHeadingAccentColor = home?.introHeadingAccentColor ?? "#D4AF37";
   const introText = home?.introText ?? "Specijalizovani smo za profesionalno fotografisanje, snimanje, 360° ture i dron snimke nekretnina. Naš cilj je da prenesemo atmosferu i luksuz svakog prostora, privlačeći prave kupce.";
   const detailImage = home?.detailImageUrl || DEFAULT_DETAIL_IMAGE;
   const detailLabel = home?.detailLabel ?? "Enterijeri & Prostori";
@@ -127,7 +129,7 @@ export default function HomePageFallback({
             className="text-3xl md:text-5xl font-serif mb-8 leading-tight"
           >
             {introHeading}
-            <span className="text-[#D4AF37] italic">najboljem svetlu</span>.
+            <span style={{ color: introHeadingAccentColor }} className="italic">{introHeadingAccent}</span>.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
