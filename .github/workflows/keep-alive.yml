@@ -1,0 +1,15 @@
+name: Keep Supabase Alive
+
+on:
+  schedule:
+    - cron: '0 12 */5 * *'  # svakih 5 dana u podne (UTC)
+  workflow_dispatch:         # mozes i rucno pokrenuti
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping sajt
+        run: |
+          curl -s -o /dev/null -w "Status: %{http_code}" https://luminusnextjs.vercel.app
+          echo " - Ping uspešan"
