@@ -59,7 +59,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between min-h-[5rem] sm:min-h-[5.5rem] md:h-24 gap-3 py-2">
           {/* Logo - levo na svim uređajima, na mobilnom manji */}
           <Link href="/" className="flex-shrink-0 flex items-center">
-            <img src="/logo.png" alt="Luminus Logo" className="h-[3.8rem] sm:h-[5rem] md:h-[6.8rem] w-auto object-contain" />
+            <img src="/logo.png" alt="Luminus Logo" className="h-[6rem] sm:h-[8rem] md:h-[10rem] w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation */}
