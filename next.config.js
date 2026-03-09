@@ -1,3 +1,4 @@
+// Next.js 14.2.0 configuration for Hostinger/Vercel compatibility
 const cspHeader = `
     default-src 'self';
     connect-src 'self' https://formspree.io https://*.api.sanity.io wss://*.api.sanity.io https://registry.npmjs.org https://*.supabase.co;
